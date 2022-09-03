@@ -1,15 +1,88 @@
+<!DOCTYPE html>
 <html>
-    <head>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+ 
+    $(document).ready(function () {
 
-    </head>
-    <body>
-        <table border="1">
+        $.ajax({
+    url: './data.json',
+    type: "get",
+    dataType: "json",
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        // since we are using jQuery, you don't need to parse response
+        drawTable(data);
+    }
+});
+
+function drawTable(data) {
+    for (var i = 0; i < data.length; i++) {
+        drawRow(data[i]);
+    }
+}
+
+function drawRow(rowData) {
+    var row = $("<tr />")
+    $("#personDataTable").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+    row.append($("<td>" + rowData['Server Name'] + "</td>"));
+    row.append($("<td>SID</td>"));
+    row.append($("<td>Environment</td>"));
+    row.append($("<td>" + rowData['VM check Uptime'] + "</td>"));
+    row.append($("<td>Primari node</td>"));
+    row.append($("<td>Server stastu	3</td>"));
+    row.append($("<td>Server stastu	4</td>"));
+    row.append($("<td>Server stastu	5</td>"));
+    row.append($("<td>Server stastu	6</td>"));
+    diskSpaceTable(row, rowData['Disk IO']);
+    row.append($("<td>" + rowData['VM check Uptime'] + "</td>"));
+    row.append($("<td>" + rowData['Memory Utilization'] + "</td>"));
+    row.append($("<td>" + rowData['CPU Utilization'] + "</td>"));
+    row.append($("<td>" + rowData['CPU Utilization'] + "</td>"));
+    row.append($("<td>" + rowData['CPU Utilization'] + "</td>"));
+
+     
+}
+
+function diskSpaceTable(row, arrJSON) {
+  var $table = $('<table/>');
+   
+  for (var i = 0; i < arrJSON.length; i++) {
+   var $tableTr = $('<tr/>');
+    for (var index in arrJSON[i]) {
+      $tableTr.append($('<td/>').html(arrJSON[i][index]));
+    }
+    $table.append($tableTr);
+  }
+  var col = $("<td></td>")
+  col.append($table);
+  row.append(col);
+}
+
+});
+     
+
+    </script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <div class="jumbotron text-center">
+        <h1>Server Data</h1>
+      </div>
+      
+      <div class="container-fluid">
+            
+        <table border="1" id="personDataTable" class="table table-bordered">
             <tr>
                 <td colspan="3">Eyeball</td>
                 <td colspan="6">Server stastu</td>
                 <td colspan="6">Utilization</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>Server name</td>
                 <td>SID</td>
                 <td>Environment</td>
@@ -25,80 +98,12 @@
                 <td>Utilization 4</td>
                 <td>Utilization 5</td>
                 <td>Utilization 6</td>
-
-            </tr>
-            <tr>
-                <td>Server name 1</td>
-                <td>SID 1</td>
-                <td>Environment 1</td>
-                <td>VM Check 1</td>
-                <td>Primari node</td>
-                <td>Cluster status</td>
-                <td>Server stastu 1</td>
-                <td>Server stastu 2</td>
-                <td>Server stastu 3</td>
-                <td>
-                   <table>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 97%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 95%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 92%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 92%</td>
-                        </tr>                    
-                        <tr>
-                            <td>/db2/R1R/sapdata1 90%</td>
-                        </tr>
-                    </table>
-                </td>
-                <td>Utilization 2</td>
-                <td>Utilization 3</td>
-                <td>Utilization 4</td>
-                <td>Utilization 5</td>
-                <td>Utilization 6</td>
-
-            </tr>
-            <tr>
-                <td>Server name</td>
-                <td>SID</td>
-                <td>Environment</td>
-                <td>VM Check</td>
-                <td>Primari node</td>
-                <td>Cluster status</td>
-                <td>Server stastu 1</td>
-                <td>Server stastu 2</td>
-                <td>Server stastu 3</td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 97%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 95%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 92%</td>
-                        </tr>
-                        <tr>
-                            <td>/db2/R1R/sapdata1 92%</td>
-                        </tr>                    
-                        <tr>
-                            <td>/db2/R1R/sapdata1 90%</td>
-                        </tr>
-                    </table>
-                </td>
-                <td>Utilization 2</td>
-                <td>Utilization 3</td>
-                <td>Utilization 4</td>
-                <td>Utilization 5</td>
-                <td>Utilization 6</td>
-
-            </tr>
+        
+            </tr> -->
+            
         </table>
-    </body>
+         
+      </div>
+</body>
 </html>
+ 
